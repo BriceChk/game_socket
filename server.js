@@ -8,7 +8,10 @@ const options = {
     cert: fs.readFileSync('cert.pem')
 };
 
-const server = https.createServer(options);
+const server = https.createServer(options, (req, res) => {
+    res.writeHead(200);
+    res.end('hello world!\n');
+});
 const io = new Server(server);
 
 server.listen(3000, () => {
