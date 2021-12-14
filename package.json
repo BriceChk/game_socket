@@ -1,0 +1,15 @@
+{
+  "name": "qweez_server",
+  "version": "1.0.0",
+  "description": "Companion web server for the Qweez app, enabling realtime online quizzes",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://gitlab.reutlingen-university.de/moco-group-9/qweez_server.git"
+  },
+  "author": "Brice CHKIR, Mickaël BENASSE, Joffrey COLLET",
+  "license": "ISC"
+}
