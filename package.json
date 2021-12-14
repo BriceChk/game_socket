@@ -11,5 +11,8 @@
     "url": "https://gitlab.reutlingen-university.de/moco-group-9/qweez_server.git"
   },
   "author": "Brice CHKIR, Mickaël BENASSE, Joffrey COLLET",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "socket.io": "^4.4.0"
+  }
 }
