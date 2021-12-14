@@ -33,6 +33,7 @@ let rooms = {};
 
 io.on('connection', (socket) => {
     socket.on('request-room', async function (msg) {
+        console.log('Room request');
         let {qweezId} = msg;
 
         // Generate a 6 char code
@@ -60,6 +61,7 @@ io.on('connection', (socket) => {
     });
 
     socket.on('join-room', async function (msg) {
+        console.log('Join');
         let {gameCode, username} = msg;
         username = username.trim();
 
