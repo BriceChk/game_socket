@@ -1,14 +1,24 @@
-const https = require('https');
-const {Server} = require("socket.io");
+// Set to true & update keyPath and certPath to enable https
+const useHttps = false;
+const keyPath = 'privkey.pem';
+const certPath = 'cert.pem';
 
 const fs = require('fs');
+const {Server} = require("socket.io");
 
-const options = {
-    key: fs.readFileSync('privkey.pem'),
-    cert: fs.readFileSync('cert.pem')
-};
+let http, options;
+if (useHttps) {
+    http = require('https');
+    options = {
+        key: fs.readFileSync(keyPath),
+        cert: fs.readFileSync(certPath),
+    };
+} else {
+    http = require('http');
+    options = {};
+}
 
-const server = https.createServer(options, (req, res) => {
+const server = http.createServer(options, (req, res) => {
     res.writeHead(200);
     res.end('hello world!\n');
 });
@@ -18,7 +28,8 @@ server.listen(3000, () => {
     console.log('listening on *:3000');
 });
 
-let roomsExample = {
+// This is an example of what the data in 'rooms' looks like for the Qweez app.
+const roomsExample = {
     'QC34V': {
         'players': [
             {
