@@ -26,8 +26,11 @@ let roomsExample = {
                 score: 42
             }
         ],
-        'qweezId': 'azeaz^podsflgfjqklfjqe',
-        'currentQuestionIndex': 0,
+        'gameData': {
+            // Example for the Qweez app
+            'qweezId': 'azeaz^podsflgfjqklfjqe',
+            'currentQuestionIndex': 0,
+        },
         'status': 'waiting/playing'
     }
 }
@@ -37,7 +40,6 @@ let rooms = {};
 io.on('connection', (socket) => {
     socket.on('request-room', async function (msg) {
         console.log('Room request');
-        let {qweezId} = msg;
 
         // Generate a 6 char code
         let gameCode;
@@ -48,8 +50,7 @@ io.on('connection', (socket) => {
         // Create the room
         rooms[gameCode] = {
             'players': [],
-            'qweezId': qweezId,
-            'currentQuestionIndex': 0,
+            'gameData': msg,
             'status': 'waiting',
         }
         socket.myGame = gameCode;
@@ -59,7 +60,6 @@ io.on('connection', (socket) => {
 
         socket.emit('room-created', {
             gameCode: gameCode,
-            url: 'https://qweez-app.web.app/play/' + gameCode
         });
     });
 
@@ -101,10 +101,8 @@ io.on('connection', (socket) => {
             score: 0
         });
 
-        // Send Qweez ID
-        socket.emit('qweez-id', {
-            qweezId: room.qweezId,
-        });
+        // Send game data
+        socket.emit('game-data', room.gameData);
 
         // Broadcast user join
         io.to(gameCode).emit('player-joined', {
@@ -112,30 +110,31 @@ io.on('connection', (socket) => {
         });
     });
 
-    socket.on('start-game', async function () {
+    socket.on('start-game', async function (msg) {
         if (socket.myGame) {
             rooms[socket.myGame].status = 'playing';
+            rooms[socket.myGame].gameData = msg;
             io.to(socket.myGame).emit('status-update', {
                 'status': 'playing',
-                'questionIndex': 0,
+                'gameData': msg,
             });
         }
     });
 
-    socket.on('next-question', async function () {
+    socket.on('update-data', async function (msg) {
         if (socket.myGame) {
-            rooms[socket.myGame].status = 'playing';
-            rooms[socket.myGame].currentQuestionIndex++;
+            rooms[socket.myGame].gameData = msg;
             io.to(socket.myGame).emit('status-update', {
-                'status': 'playing',
-                'questionIndex': rooms[socket.myGame].currentQuestionIndex,
+                'status': rooms[socket.myGame].status,
+                'gameData': msg,
             });
         }
     });
 
-    socket.on('show-result', async function () {
+    socket.on('emit-event', async function (msg) {
+        let {eventName} = msg;
         if (socket.myGame) {
-            io.to(socket.myGame).emit('show-result');
+            io.to(socket.myGame).emit(eventName);
         }
     });
 
