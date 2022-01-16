@@ -1,3 +1,3 @@
-# qweez_server
+# game_socket
 
-The server companion for the Qweez app. Used for realtime games with websockets.
+A socket.io powered microservice to enable realtime games
