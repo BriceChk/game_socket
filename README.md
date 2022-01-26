@@ -2,6 +2,8 @@
 
 A socket.io powered microservice to enable realtime games.
 
+This is a class project for Reutlingen University.
+
 ## Setup
 
 In `server.js` follow the first lines of comments to setup _http_ or _https_.
