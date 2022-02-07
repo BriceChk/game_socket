@@ -2,7 +2,7 @@
 
 A socket.io powered microservice to enable realtime games.
 
-This is a class project for Reutlingen University.
+This is a class project for Reutlingen University & is used by [the Qweez app](https://github.com/BriceChk/qweez_app).
 
 ## Setup
 
